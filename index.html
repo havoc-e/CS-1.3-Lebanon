@@ -268,8 +268,14 @@ serverButtons.forEach(btn=>{
     });
 });
 
+const password = "havoc";
 window.deleteMatch = async function(id) {
-    if (!confirm("Delete this match?")) return;
+    const userInput = prompt("Enter Admin Password:");
+    if (userInput !== password) {
+       alert("Wrong password!");
+       return;
+    } 
+    //if (!confirm("Delete this match?")) return;
 
     try {
         const matchRef = doc(db, "matches", id);
