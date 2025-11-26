@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gamer Match Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+    min-height: 100vh;
+    background-color: grey;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.page-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 60px;
+    margin: 30px 0 20px;
+    color: #ffcc00;
+    text-align: center;
+}
+.main-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+.card {
+    background: rgba(0,0,0,0.85);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+#booking {
+    width: 400px;
+}
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #007bff;
+    font-size: 16px;
+}
+button {
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+button:hover:not(:disabled) { opacity: 0.9; }
+.time-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 30px 10px 30px 30px; }
+.time-button {
+    flex: 0 0 100px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+.time-button:disabled { background-color: grey; cursor: not-allowed; border: 1px solid grey; opacity: 0.6; }
+.server-buttons { display: flex; gap: 10px; margin-bottom: 0px; margin-top: 25px; width: 100%;}
+.server-button {
+    padding: 10px 20px 10px 20px;
+    font-size: 16px;
+    background-color: #228B22;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    gap: 20px;
+}
+.server-button.selected { border: 3px solid #ffbf00; }
+.server-tables { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.server-card { background: rgba(0,0,0,0.85); border-radius: 10px; padding: 15px; min-width: 250px; flex: 1; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+th, td { border: 1px solid #555; padding: 8px; text-align: left; }
+th { background-color: #222; color: #ffcc00; }
+.delete { background-color: #ff3b3b; border: none; padding: 5px 10px; border-radius: 5px; color: white; cursor: pointer; }
+.delete:hover { opacity: 0.8; }
+#bookMatchBtn{background-color: #228B22; }
+#team1, #team2 {font-size: 20px; width: 70%; margin-left:50px; }
+#bookMatchTitle {font-size: 30px; text-align:left; margin-left:100px;}
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7); /* semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* on top of everything */
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* light grey */
+    border-top: 8px solid #ffcc00; /* gold spinning part */
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<!-- Firebase compat libs (easier integration) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+
+<div id="loadingOverlay" style="display:none;">
+    <div class="spinner"></div>
+</div>
+<h1 class="page-title">Counter-Strike 1.3 Lebanon</h1>
+
+<div class="main-container">
+    <div id="booking" class="card">
+        <h2 id="bookMatchTitle">Book a Match</h2>
+        <input id="team1" type="text" placeholder="Team 1">
+        <input id="team2" type="text" placeholder="Team 2">
+
+        <div class="server-buttons" id="serverButtons">
+            <button class="server-button" data-server="1">Server 1</button>
+            <button class="server-button" data-server="2">Server 2</button>
+            <button class="server-button" data-server="3">Server 3</button>
+            <button class="server-button" data-server="4">Server 4</button>
+        </div>
+
+        <div id="timeButtons" class="time-buttons"></div>
+        <button id="bookMatchBtn">Book Match</button>
+    </div>
+
+    <div class="server-tables">
+        <div class="server-card">
+            <h3>Server 1</h3>
+            <table id="server1">
+                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="server-card">
+            <h3>Server 2</h3>
+            <table id="server2">
+                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="server-card">
+            <h3>Server 3</h3>
+            <table id="server3">
+                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="server-card">
+            <h3>Server 4</h3>
+            <table id="server4">
+                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+ import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+ import { getFirestore, collection, addDoc, doc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+ 
+
+
+// ---------- FIREBASE CONFIG - fill these values ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyC0QKeV0zRj2OG_ixidIUISsIR95I7qiCU",
+  authDomain: "cs13---lebanon.firebaseapp.com",
+  databaseURL: "https://cs13---lebanon-default-rtdb.firebaseio.com",
+  projectId: "cs13---lebanon",
+  storageBucket: "cs13---lebanon.firebasestorage.app",
+  messagingSenderId: "245930734900",
+  appId: "1:245930734900:web:641ba43a8323d27c1ce161",
+  measurementId: "G-N0S4T6JT68"
+};// --------------------------------------------------------
+
+
+// Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  const matchesCol = collection(db, "matches");
+
+document.getElementById("bookMatchBtn").addEventListener("click", bookMatch);
+// ---------- App state ----------
+let matches = []; // array of {id:key, team1, team2, time, server}
+let selectedTime = null;
+let selectedServer = null;
+const timeButtonsContainer = document.getElementById("timeButtons");
+const serverButtons = document.querySelectorAll(".server-button");
+
+
+function showSpinner() {
+    document.getElementById("loadingOverlay").style.display = "flex";
+}
+
+function hideSpinner() {
+    document.getElementById("loadingOverlay").style.display = "none";
+}
+
+// ---------- Helpers ----------
+function to12Hour(timeStr) {
+    let [h,m] = timeStr.split(":").map(Number);
+    let ampm = h>=12?"PM":"AM";
+    h = h%12||12;
+    return `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
+}
+function timeToMinutes(t){ let [h,m]=t.split(":").map(Number); if(h<8)h+=24; return h*60+m; }
+
+// ---------- Generate times (hours only) ----------
+function generateTimes() {
+    timeButtonsContainer.innerHTML = "";
+    for(let h=20; h<=23; h++){ addTimeButton(h); }
+    for(let h=0; h<=3; h++){ addTimeButton(h); }
+}
+function addTimeButton(hour) {
+    const t = `${String(hour).padStart(2,'0')}:00`;
+    const btn = document.createElement("button");
+    btn.className = "time-button";
+    btn.textContent = to12Hour(t);
+    btn.dataset.time = t;
+    btn.onclick = () => { selectedTime = t; highlightSelectedTime(); };
+    timeButtonsContainer.appendChild(btn);
+}
+function highlightSelectedTime(){
+    Array.from(timeButtonsContainer.children).forEach(b=>b.style.border="1px solid #007bff");
+    Array.from(timeButtonsContainer.children).forEach(b=>{ if(b.dataset.time===selectedTime) b.style.border="3px solid #ffbf00"; });
+}
+
+// ---------- Server selection ----------
+serverButtons.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        selectedServer = Number(btn.dataset.server);
+        serverButtons.forEach(b=>b.classList.remove("selected"));
+        btn.classList.add("selected");
+        if (matches.length > 0) {
+            updateTimeButtons(matches);
+        }
+    });
+});
+
+window.deleteMatch = async function(id) {
+    if (!confirm("Delete this match?")) return;
+
+    try {
+        const matchRef = doc(db, "matches", id);
+        await deleteDoc(matchRef);
+        console.log("Deleted match:", id);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+// ---------- Firebase real-time listener ----------
+  function loadMatches(callback) {
+    showSpinner(); 
+    const q = query(collection(db, "matches"), orderBy("time"));
+    onSnapshot(q, snapshot => {
+      matches = [];
+      snapshot.forEach(doc => matches.push({ id: doc.id, ...doc.data() }));
+      renderAllMatches(matches); 
+      hideSpinner();
+      //callback(matches);
+      updateTimeButtons(matches);
+    });
+  }
+// ---------- Book match (writes to Firebase) ----------
+function bookMatch1(){
+    const t1 = document.getElementById("team1").value.trim();
+    const t2 = document.getElementById("team2").value.trim();
+    if(!t1 || !t2 || !selectedTime || !selectedServer) { alert("Fill all fields."); return; }
+
+    // Check if time is already booked
+    const conflict = matches.some(m => m.server==selectedServer && m.time==selectedTime);
+    if(conflict){ alert("Time already booked."); return; }
+
+    db.collection("matches").add({
+        team1: t1,
+        team2: t2,
+        time: selectedTime,
+        server: Number(selectedServer)
+    });
+
+    document.getElementById("team1").value="";
+    document.getElementById("team2").value="";
+    selectedTime=null;
+    highlightSelectedTime();
+}
+
+async function bookMatch() {
+    const t1 = document.getElementById("team1").value.trim();
+    const t2 = document.getElementById("team2").value.trim();
+    if(!t1 || !t2 || !selectedTime || !selectedServer) { 
+        alert("Fill all fields."); 
+        return; 
+    }
+
+    // Check if time is already booked locally
+    const conflict = matches.some(m => m.server == selectedServer && m.time == selectedTime);
+    if(conflict){ 
+        alert("Time already booked."); 
+        return; 
+    }
+
+    try {
+        await addDoc(matchesCol, {
+            team1: t1,
+            team2: t2,
+            time: selectedTime,
+            server: Number(selectedServer)
+        });
+
+        document.getElementById("team1").value = "";
+        document.getElementById("team2").value = "";
+        selectedTime = null;
+        highlightSelectedTime();
+    } catch (error) {
+        console.error("Error adding match:", error);
+        alert("Failed to book match. See console for details.");
+    }
+}
+
+// ---------- Delete match (remove from Firebase) ----------
+function deleteMatch2(id){
+    if (!confirm("Delete this match?")) return;
+    db.ref('matches/' + id).remove().catch(err => console.error(err));
+}
+
+function deleteMatch3(id) {
+    if (!confirm("Delete this match?")) return;
+
+    const matchRef = doc(db, "matches", id);
+    deleteDoc(matchRef)
+        .then(() => console.log("Match deleted:", id))
+        .catch(err => console.error(err));
+}
+
+// ---------- Render matches into tables ----------
+function renderAllMatches(matches){
+    for(let s=1; s<=4; s++){
+        const tbody = document.querySelector(`#server${s} tbody`);
+        tbody.innerHTML = "";
+        const serverMatches = matches.filter(m => m.server === s).sort((a,b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+        serverMatches.forEach(m => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${escapeHtml(m.team1)} vs ${escapeHtml(m.team2)}</td>
+                             <td>${to12Hour(m.time)}</td>
+                             <td><button class="delete" onclick="deleteMatch('${m.id}')">X</button></td>`;
+            tbody.appendChild(row);
+        });
+    }
+    updateTimeButtons(matches);
+}
+
+// ---------- Update time buttons disabled state based on selectedServer ----------
+function updateTimeButtons2(){
+    Array.from(timeButtonsContainer.children).forEach(btn=>{
+        if(!selectedServer) {
+            btn.disabled = false;
+            btn.style.border = "1px solid #007bff";
+            return;
+        }
+        const isBooked = matches.some(m => m.server === selectedServer && m.time === btn.dataset.time);
+        btn.disabled = isBooked;
+        btn.style.border = isBooked ? "1px solid grey" : "1px solid #007bff";
+    });
+}
+
+function updateTimeButtons(matches) {
+  const currentMatches = matches || [];
+  Array.from(timeButtonsContainer.children).forEach(btn => {
+    if (!selectedServer) {
+      btn.disabled = false;
+      btn.style.border = "1px solid #007bff";
+      return;
+    }
+
+    // Disable if time already exists in matches for the selected server
+    const conflict = matches.some(
+      m => m.server == selectedServer && m.time == btn.dataset.time
+    );
+
+    btn.disabled = conflict;
+    btn.style.border = conflict ? "1px solid grey" : "1px solid #007bff";
+  });
+}
+
+// ---------- small helper to avoid HTML injection ----------
+function escapeHtml(text) {
+    if (!text) return "";
+    return text.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+}
+
+// ---------- init ----------
+generateTimes();
+loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+</script>
+</body>
+</html>
