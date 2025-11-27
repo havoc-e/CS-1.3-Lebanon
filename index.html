@@ -108,8 +108,24 @@ button:hover:not(:disabled) { opacity: 0.9; }
     text-align: center;
 }
 .time-button:disabled { background-color: grey; cursor: not-allowed; border: 1px solid grey; opacity: 0.6; }
-.server-buttons { display: flex; gap: 10px; margin-bottom: 0px; margin-top: 25px; width: 100%; flex-wrap: wrap;}
-.server-button {
+.server-buttons2 { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 0px; 
+    margin-top: 25px; 
+    width: 100%; 
+    flex-wrap: wrap;
+}
+.server-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    #grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
+    gap: 10px;
+    #justify-items: center; /* center buttons in their grid cell */
+    justify-content: center;
+    width: 100%;
+}
+.server-button2 {
     #padding: 10px 20px 10px 20px;
     font-size: 15px;
     background-color: #228B22;
@@ -119,6 +135,14 @@ button:hover:not(:disabled) { opacity: 0.9; }
     color: white;
     gap: 20px;
     flex: 1 1 auto;  
+}
+.server-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    #min-width: 80px;
+    max-width: 120px;
+    background-color: #228B22;
 }
 .server-button.selected { border: 3px solid #ffbf00; }
 .server-tables2 { 
