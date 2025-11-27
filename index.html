@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta property="og:title" content="CS1.3 Lebanon - Match Booking" />
-<meta property="og:description" content="CS1.3 Lebanon - Match Booking" />
-<meta property="og:image" content="https://raw.githubusercontent.com/HaniEid/CS-1.3-Lebanon/main/booking.png" />
-<meta property="og:url" content="https://cslebanon.netlify.app/" />
-<meta property="og:type" content="website" />
-    
 <link rel="icon" type="image/png" href="favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
@@ -14,40 +8,64 @@
 <title>CS1.3 Lebanon - Match Booking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 30px;
+    #padding: 30px;
     min-height: 100vh;
+    width: 100vw;
     background-color: grey;
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 .page-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 30px;
-    margin: 30px 0 20px;
+    font-size: clamp(20px, 6vw, 80px);
+    margin: 0px;
     color: #ffcc00;
     text-align: center;
+    white-space: normal;      /* allow wrapping */
+    overflow: visible;        /* don't hide text */
+    text-overflow: unset;     
+    padding: 0;
+    line-height: 1.2;         /* optional: adjust spacing */
 }
 .main-container {
     display: flex;
+    flex-direction: column;  /* stack on mobile */
     gap: 20px;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    flex-wrap: wrap;
+    #justify-content: flex-start;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    #flex-wrap: wrap;
 }
 .card {
     background: rgba(0,0,0,0.85);
     padding: 20px;
     margin-bottom: 30px;
     border-radius: 10px;
+    max-width: 500px; 
 }
 #booking {
-    width: 400px;
+    width: 100%;
 }
 input, button {
     width: 100%;
@@ -76,28 +94,68 @@ button:hover:not(:disabled) { opacity: 0.9; }
     text-align: center;
 }
 .time-button:disabled { background-color: grey; cursor: not-allowed; border: 1px solid grey; opacity: 0.6; }
-.server-buttons { display: flex; gap: 10px; margin-bottom: 0px; margin-top: 25px; width: 100%;}
+.server-buttons { display: flex; gap: 10px; margin-bottom: 0px; margin-top: 25px; width: 100%; flex-wrap: wrap;}
 .server-button {
-    padding: 10px 20px 10px 20px;
-    font-size: 16px;
+    #padding: 10px 20px 10px 20px;
+    font-size: 15px;
     background-color: #228B22;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     color: white;
     gap: 20px;
+    flex: 1 1 auto;  
 }
 .server-button.selected { border: 3px solid #ffbf00; }
-.server-tables { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; }
-.server-card { background: rgba(0,0,0,0.85); border-radius: 10px; padding: 15px; min-width: 250px; flex: 1; }
+.server-tables2 { 
+	display: flex; 
+	gap: 20px; 
+	flex-wrap: wrap; 
+	justify-content: center; 
+	width: 100%; 
+}
+.server-tables {
+    display: grid;
+    #grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    width: 90%;
+}
+
+@media (max-width: 600px) {
+    .server-tables {
+        grid-template-columns: 1fr;  /* stack all tables on small screens */
+    }
+}
+
+
+.server-card2 { background: rgba(0,0,0,0.85); border-radius: 10px; padding: 15px; min-width: 250px; flex: 1; }
+.server-card {
+    background: rgba(0,0,0,0.85);
+    border-radius: 10px;
+    padding: 15px;    
+    flex: 1 1 250px; /* grows/shrinks, minimum 250px */
+    max-width: 600px; /* optional max width */
+}
 table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
 th, td { border: 1px solid #555; padding: 8px; text-align: left; }
 th { background-color: #222; color: #ffcc00; }
-.delete { background-color: #ff3b3b; border: none; padding: 5px 10px; border-radius: 5px; color: white; cursor: pointer; }
+.delete { background-color: #ff3b3b; border: none; padding: 5px 10px; border-radius: 100px; color: white; cursor: pointer; width: 70%; }
 .delete:hover { opacity: 0.8; }
 #bookMatchBtn{background-color: #228B22; }
-#team1, #team2 {font-size: 20px; width: 70%; margin-left:50px; }
-#bookMatchTitle {font-size: 30px; text-align:left; margin-left:100px;}
+#team1, #team2 {
+    width: 100%;         /* full width of container */
+    max-width: 400px;    /* optional, for bigger screens */
+    margin: 0 auto;      /* center on mobile */
+    display: block;
+}
+#bookMatchTitle {
+    text-align: center;  /* center title */
+    margin: 0 0 20px 0;  /* remove left margin */
+}.toggle-btn{
+   width: 80px;
+}
+
 #loadingOverlay {
     position: fixed;
     top: 0;
@@ -124,6 +182,116 @@ th { background-color: #222; color: #ffcc00; }
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 15px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 15px;
+  left: 0px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.wiss-signature1 {
+    position: fixed;
+    top: 12px;
+    right: 15px;
+    font-size: 13px;
+    font-family: "Courier New", monospace;
+    opacity: 0.45;
+    letter-spacing: 2px;
+    font-weight: 600;
+    user-select: none;
+}
+.wiss-console {
+    #position: fixed;
+    top: 0;
+    left: 0;
+    background: black;
+    color: #00ff00;
+    padding: 4px 8px;
+    font-family: "Consolas", monospace;
+    font-size: 12px;
+    opacity: 0.85;
+    margin-bottom: 20px;
+}
+.row {
+    display: flex;
+    gap: 0px;        /* space between them */
+    margin-top: 30px;
+    padding: 0px;
+    display: block;
+}
+.box {
+    background: black;
+    opacity: 0.85;
+    padding: 30px;
+    #flex: 1;          /* both divs become equal size */
+    margin: 0;
+    gap: 0;
+    display: block;
+    #border-radius: 20px;
+}
+
+.box1 {
+    #background: lightgrey;
+    padding: 10px;
+    flex: 1;          /* both divs become equal size */
+    gap: 0;
+}
 </style>
 
 <!-- Firebase compat libs (easier integration) -->
@@ -139,8 +307,12 @@ th { background-color: #222; color: #ffcc00; }
 <div id="loadingOverlay" style="display:none;">
     <div class="spinner"></div>
 </div>
-<h1 class="page-title">Counter-Strike 1.3 Lebanon</h1>
 
+<div class="row">
+	<div class="box"><h1 class="page-title">Counter-Strike 1.3 Lebanon</h1></DIV>
+       	<!--<div class="box1" id="terminal">by WISS ✦</div>-->
+</div>
+<div class="wiss-console">:: by WISS ::</div>
 <div class="main-container">
     <div id="booking" class="card">
         <h2 id="bookMatchTitle">Book a Match</h2>
@@ -148,47 +320,19 @@ th { background-color: #222; color: #ffcc00; }
         <input id="team2" type="text" placeholder="Team 2">
 
         <div class="server-buttons" id="serverButtons">
-            <button class="server-button" data-server="1">Server 1</button>
-            <button class="server-button" data-server="2">Server 2</button>
-            <button class="server-button" data-server="3">Server 3</button>
-            <button class="server-button" data-server="4">Server 4</button>
+            <button class="server-button" data-server="1" id="server1Btn">Server 1</button>
+            <button class="server-button" data-server="2" id="server2Btn">Server 2</button>
+            <button class="server-button" data-server="3" id="server3Btn">Server 3</button>
+            <button class="server-button" data-server="4" id="server4Btn">Server 4</button>
+            <button class="server-button" data-server="5" id="server5Btn">Server 5</button>
         </div>
 
         <div id="timeButtons" class="time-buttons"></div>
         <button id="bookMatchBtn">Book Match</button>
-    </div>
-
-    <div class="server-tables">
-        <div class="server-card">
-            <h3>Server 1</h3>
-            <table id="server1">
-                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="server-card">
-            <h3>Server 2</h3>
-            <table id="server2">
-                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="server-card">
-            <h3>Server 3</h3>
-            <table id="server3">
-                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-        <div class="server-card">
-            <h3>Server 4</h3>
-            <table id="server4">
-                <thead><tr><th>Teams</th><th>Time</th><th>Action</th></tr></thead>
-                <tbody></tbody>
-            </table>
-        </div>
-    </div>
+    </div>  
 </div>
+<div class="server-tables" id="serverTables"></div>
+
 
 <script type="module">
 
@@ -225,6 +369,76 @@ let selectedServer = null;
 const timeButtonsContainer = document.getElementById("timeButtons");
 const serverButtons = document.querySelectorAll(".server-button");
 
+//const enabledServers = [1, 2, 3, 4, 5]; 
+let enabledServers = {
+  1: true,
+  2: true,
+  3: true,
+  4: true,
+  5: true
+};
+function renderServerTables() {
+    const container = document.getElementById("serverTables");
+    container.innerHTML = "";
+
+    Object.keys(enabledServers).forEach(s => {
+        const enabled = enabledServers[s];
+        console.log(enabled);
+        const card = document.createElement("div");
+        card.className = "server-card";
+        card.innerHTML = `            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                <h3 style="margin:0; ${enabled ? '' : 'color:#555;'}">Server ${s}</h3>
+                <label class="switch">
+  			<input type="checkbox"  ${enabledServers[s] ? "checked" : ""} onchange="toggleServer(${s}, this)">
+			  <span class="slider round"></span>
+		</label>
+                
+            </div>
+
+            <div class="server-content" style="${enabled ? '' : 'pointer-events:none; opacity:0.4;'}">
+                <table id="server${s}">
+                    <thead>
+                        <tr><th>Teams</th><th>Time</th><th>Action</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                ${!enabled ? '<div style="color:#aaa; margin-top:5px;">Server disabled</div>' : ''}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+window.toggleServer = function(i, checkbox) {
+  const userInput = prompt("Enter Admin Password:");
+   if (userInput !== password) {
+       alert("Wrong password!");
+       checkbox.checked = !checkbox.checked;
+       return;
+   } 
+
+    const serverBtn = document.getElementById("server" + i + "Btn");    
+
+
+    enabledServers[i] = !enabledServers[i];
+   
+    if(!enabledServers[i]){
+    serverBtn.disabled = true;
+    // Change the color and style
+    serverBtn.style.backgroundColor = "grey";  // background
+    serverBtn.style.color = "white";           // text color
+    serverBtn.style.cursor = "not-allowed";    // cursor style
+    }else{
+    serverBtn.disabled = false;
+    serverBtn.style.backgroundColor = "#228B22";
+    serverBtn.style.cursor = "pointer";
+    }
+    console.log(enabledServers);
+    renderServerTables();
+    renderAllMatches(matches);
+};
 
 function showSpinner() {
     document.getElementById("loadingOverlay").style.display = "flex";
@@ -287,7 +501,7 @@ window.deleteMatch = async function(id) {
     
 
     try {
-        const matchRef = doc(db, "matches", id);
+        const matchRef = doc(matchesCol, id);
         //await deleteDoc(matchRef);
 
         // Mark as deleted instead of removing permanently
@@ -303,7 +517,7 @@ window.deleteMatch = async function(id) {
 // ---------- Firebase real-time listener ----------
   function loadMatches(callback) {
     showSpinner(); 
-    const q = query(collection(db, "matches"), where("deleted", "==", false));
+    const q = query(matchesCol, where("deleted", "==", false));
     onSnapshot(q, snapshot => {
       matches = [];
       snapshot.forEach(doc => matches.push({ id: doc.id, ...doc.data() }));
@@ -314,28 +528,6 @@ window.deleteMatch = async function(id) {
     });
   }
 // ---------- Book match (writes to Firebase) ----------
-function bookMatch1(){
-    const t1 = document.getElementById("team1").value.trim();
-    const t2 = document.getElementById("team2").value.trim();
-    if(!t1 || !t2 || !selectedTime || !selectedServer) { alert("Fill all fields."); return; }
-
-    // Check if time is already booked
-    const conflict = matches.some(m => m.server==selectedServer && m.time==selectedTime);
-    if(conflict){ alert("Time already booked."); return; }
-
-    db.collection("matches").add({
-        team1: t1,
-        team2: t2,
-        time: selectedTime,
-        server: Number(selectedServer)
-    });
-
-    document.getElementById("team1").value="";
-    document.getElementById("team2").value="";
-    selectedTime=null;
-    highlightSelectedTime();
-}
-
 async function bookMatch() {
     const t1 = document.getElementById("team1").value.trim();
     const t2 = document.getElementById("team2").value.trim();
@@ -372,27 +564,17 @@ async function bookMatch() {
     }
 }
 
-// ---------- Delete match (remove from Firebase) ----------
-function deleteMatch2(id){
-    if (!confirm("Delete this match?")) return;
-    db.ref('matches/' + id).remove().catch(err => console.error(err));
-}
-
-function deleteMatch3(id) {
-    if (!confirm("Delete this match?")) return;
-
-    const matchRef = doc(db, "matches", id);
-    deleteDoc(matchRef)
-        .then(() => console.log("Match deleted:", id))
-        .catch(err => console.error(err));
-}
-
 // ---------- Render matches into tables ----------
 function renderAllMatches(matches){
-    for(let s=1; s<=4; s++){
-        const tbody = document.querySelector(`#server${s} tbody`);
+    //console.log(enabledServers.filter(x => x).length)
+    for(let s=1; s<=5; s++){
+        const tbody = document.querySelector(`#server${Object.keys(enabledServers)[s-1]} tbody`);
         tbody.innerHTML = "";
-        const serverMatches = matches.filter(m => m.server === s).sort((a,b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+        
+        const serverMatches = matches.filter(m => m.server === Number(Object.keys(enabledServers)[s-1])).sort((a,b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+  	console.log(Object.keys(enabledServers)[s-1]);
+        console.log(serverMatches);
+
         serverMatches.forEach(m => {
             const row = document.createElement("tr");
             row.innerHTML = `<td>${escapeHtml(m.team1)} vs ${escapeHtml(m.team2)}</td>
@@ -444,11 +626,13 @@ function escapeHtml(text) {
 }
 
 // ---------- init ----------
+renderServerTables();
 generateTimes();
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 </script>
 </body>
-<footer style="text-align:center; padding:20px; margin-top:50px; font-size:0.8rem; color:black;">
+<footer style="text-align:center; padding:20px; margin-top:10px; margin-bottom: 30px; font-size:0.8rem; color:black;">
   Developed by H A V O C | &copy; 2025 All rights reserved
 </footer>
 </html>
