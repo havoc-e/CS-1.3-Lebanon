@@ -31,3 +31,5 @@ async function resetMatches() {
     console.error("Error resetting matches:", err);
   }
 }
+
+resetMatches();
