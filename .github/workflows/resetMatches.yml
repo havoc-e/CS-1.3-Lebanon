@@ -2,7 +2,7 @@ name: Reset Matches Daily
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # every 5 minutes
+    - cron: '0 4 * * *'  # every 5 minutes
   workflow_dispatch:
 
 jobs:
