@@ -302,10 +302,12 @@ input:checked + .slider:before {
 }
 
 #resetMatchesBtn{
-    width: 20%;
+    width: 10%;
     margin-bottom: 30px;
     margin-top: 30px;
     font-size: medium;
+    background-color: black;
+    color: white;
 }
 </style>
 
@@ -344,11 +346,10 @@ input:checked + .slider:before {
         
         <div id="timeButtons" class="time-buttons"></div>
         <button id="bookMatchBtn">Book Match</button>
-    </div>  
-    <button id="resetMatchesBtn" onclick="resetAllMatches()">Reset All Matches</button>
+    </div>      
 </div>
 <div class="server-tables" id="serverTables"></div>
-
+<button id="resetMatchesBtn" onclick="resetAllMatches()">Reset All Matches</button>
 
 <script type="module">
 
