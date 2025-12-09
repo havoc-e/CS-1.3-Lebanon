@@ -1,4 +1,3 @@
-<style>
 html, body {
     margin: 0;
     padding: 0;
@@ -14,8 +13,7 @@ html, body {
 }
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    #padding: 30px;
+    margin: 0;    
     min-height: 100vh;
     width: 100vw;
     background-color: grey;
@@ -40,13 +38,11 @@ body {
 .main-container {
     display: flex;
     flex-direction: column;  /* stack on mobile */
-    gap: 20px;
-    #justify-content: flex-start;
+    gap: 20px;    
     align-items: center;
     width: 90%;
     max-width: 1200px;
-    margin: 0 auto;
-    #flex-wrap: wrap;
+    margin: 0 auto;    
 }
 .card {
     background: rgba(0,0,0,0.85);
@@ -77,8 +73,6 @@ button:hover:not(:disabled) { opacity: 0.9; }
     display: flex; 
     flex-wrap: wrap; 
     gap: 10px; 
-    #margin: 30px 10px 30px 30px; 
-    #margin-left: 10px;
     justify-content: center;
 }
 .time-button {
@@ -95,21 +89,18 @@ button:hover:not(:disabled) { opacity: 0.9; }
 .server-buttons {
     display: flex;
     flex-wrap: wrap;
-    #grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
-    gap: 10px;
-    #justify-items: center; /* center buttons in their grid cell */
+    gap: 10px;    
     justify-content: center;
     width: 100%;
 }
 .server-button {
     padding: 10px 15px;
     font-size: 14px;
-    border-radius: 8px;
-    #min-width: 80px;
+    border-radius: 8px;    
     max-width: 120px;
     background-color: #228B22;
 }
-#server6Btn{
+#serverGhadabBtn{
     background-color: #eb18bd;    
 }
 
@@ -118,8 +109,7 @@ button:hover:not(:disabled) { opacity: 0.9; }
 }
 .server-button.selected { border: 3px solid #ffbf00; }
 .server-tables {
-    display: grid;
-    #grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+    display: grid;    
     gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     width: 90%;
@@ -138,11 +128,17 @@ button:hover:not(:disabled) { opacity: 0.9; }
     max-width: 600px; /* optional max width */
 }
 table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+
 th, td { border: 1px solid #555; padding: 8px; text-align: left; }
+
 th { background-color: #222; color: #ffcc00; }
+
 .delete { background-color: #ff3b3b; border: none; padding: 5px 10px; border-radius: 100px; color: white; cursor: pointer; width: 70%; }
+
 .delete:hover { opacity: 0.8; }
+
 #bookMatchBtn{background-color: #228B22; }
+
 #team1, #team2 {
     width: 50%;         /* full width of container */
     max-width: 400px;    /* optional, for bigger screens */
@@ -255,8 +251,7 @@ input:checked + .slider:before {
     font-weight: 600;
     user-select: none;
 }
-.wiss-console {
-    #position: fixed;
+.wiss-console {    
     top: 0;
     left: 0;
     background: black;
@@ -277,16 +272,13 @@ input:checked + .slider:before {
 .box {
     background: black;
     opacity: 0.85;
-    padding: 30px;
-    #flex: 1;          /* both divs become equal size */
+    padding: 30px;    
     margin: 0;
     gap: 0;
-    display: block;
-    #border-radius: 20px;
+    display: block;    
 }
 
-.box1 {
-    #background: lightgrey;
+.box1 {    
     padding: 10px;
     flex: 1;          /* both divs become equal size */
     gap: 0;
@@ -304,4 +296,3 @@ input:checked + .slider:before {
     border: none;
     border-radius: 6px;
 }
-</style>
