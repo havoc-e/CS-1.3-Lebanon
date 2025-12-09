@@ -39,7 +39,7 @@ let enabledServers = {
   4: true,
   5: true,  
   Ghadab: true,
-  6: true,
+  6: true
 };
 function renderServerTables() {
     const container = document.getElementById("serverTables");
@@ -321,3 +321,4 @@ function escapeHtml(text) {
 renderServerTables();
 generateTimes();
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
