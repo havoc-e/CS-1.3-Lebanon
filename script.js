@@ -21,7 +21,7 @@ const firebaseConfig = {
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
-  const matchesCol = collection(db, "matches_prod");
+  const matchesCol = collection(db, "matches_dev");
 
 document.getElementById("bookMatchBtn").addEventListener("click", bookMatch);
 // ---------- App state ----------
@@ -39,7 +39,8 @@ let enabledServers = {
   4: true,
   5: true,  
   Ghadab: true,
-  6: true
+  6: true,
+  7: true
 };
 function renderServerTables() {
     const container = document.getElementById("serverTables");
