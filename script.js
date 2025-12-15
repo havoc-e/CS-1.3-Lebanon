@@ -125,7 +125,7 @@ function timeToMinutes(t){ let [h,m]=t.split(":").map(Number); if(h<8)h+=24; ret
 // ---------- Generate times (hours only) ----------
 function generateTimes() {
     timeButtonsContainer.innerHTML = "";
-    for(let h=19; h<=23; h++){ addTimeButton(h); }
+    for(let h=18; h<=23; h++){ addTimeButton(h); }
     for(let h=0; h<=3; h++){ addTimeButton(h); }
 }
 function addTimeButton(hour) {
@@ -323,3 +323,4 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
