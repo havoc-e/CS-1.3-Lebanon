@@ -40,7 +40,8 @@ let enabledServers = {
   5: true,  
   Ghadab: true,
   6: true,
-  7: true
+  7: true,
+  8: true
 };
 function renderServerTables() {
     const container = document.getElementById("serverTables");
@@ -323,4 +324,5 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 
