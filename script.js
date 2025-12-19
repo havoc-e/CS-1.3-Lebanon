@@ -56,7 +56,7 @@ function renderServerTables() {
         card.className = "server-card";
         card.innerHTML = `            
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                <h3 style="margin:0; ${enabled ? '' : 'color:#555;'}" id="${s}">Server ${s}</h3>
+                <h3 style="margin:0; ${enabled ? '' : 'color:#555;'}" id="${s}">Server ${s}<span>${s==10 ? ' - Cheats 0' : ''}</h3>
                 <label class="switch">
   			<input type="checkbox"  ${enabledServers[s] ? "checked" : ""} onchange="toggleServer(${s}, this)">
 			  <span class="slider round"></span>
@@ -326,6 +326,7 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 
 
 
