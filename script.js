@@ -33,22 +33,24 @@ const serverButtons = document.querySelectorAll(".server-button");
 
 //const enabledServers = [1, 2, 3, 4, 5]; 
 let enabledServers = {
-  1: true,
-  2: true,
-  3: true,
-  4: true,
-  5: true,  
-  Ghadab: true,
-  6: true,
-  7: true,
-  8: true,
-  9: true,
-  10: true,
-  11: true,
-  12: true,
-  13: true,
-  14: true,
-  15: true
+  	1: true,
+  	2: true,
+  	3: true,
+  	4: true,
+  	5: true,  
+  	Ghadab: true,
+ 	6: true,
+ 	7: true,
+ 	8: true,
+ 	9: true,
+ 	10: true,
+	11: true,
+ 	12: true,
+  	13: true,
+  	14: true,
+  	15: true,
+	16, true,
+	17: true
 };
 function renderServerTables() {
     const container = document.getElementById("serverTables");
@@ -331,6 +333,7 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 
 
 
