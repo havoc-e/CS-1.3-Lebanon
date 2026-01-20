@@ -49,7 +49,7 @@ let enabledServers = {
   	13: true,
   	14: true,
   	15: true,
-	16, true,
+	16: true,
 	17: true
 };
 function renderServerTables() {
@@ -333,6 +333,7 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 
 
 
