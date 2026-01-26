@@ -137,7 +137,21 @@ th { background-color: #222; color: #ffcc00; }
 
 .delete:hover { opacity: 0.8; }
 
-#bookMatchBtn{background-color: #228B22; }
+#bookMatchBtn {
+    background: linear-gradient(135deg, #7b5cff, #9b6bff);
+    box-shadow: 0 10px 26px rgba(123, 92, 255, 0.45);
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    /*padding: 14px 28px;*/
+    font-size: 36px;
+    font-weight: 600;
+    width: auto;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-radius: 18px;
+    margin-top: 20px;
+}
 
 #team1, #team2 {
     width: 50%;         /* full width of container */
@@ -296,3 +310,4 @@ input:checked + .slider:before {
     border: none;
     border-radius: 6px;
 }
+
