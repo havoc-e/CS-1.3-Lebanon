@@ -140,17 +140,18 @@ th { background-color: #222; color: #ffcc00; }
 #bookMatchBtn {
     background: linear-gradient(135deg, #7b5cff, #9b6bff);
     box-shadow: 0 10px 26px rgba(123, 92, 255, 0.45);
-    color: #ffffff;
+    color: #000000;
     border: none;
-    border-radius: 14px;
-    /*padding: 14px 28px;*/
-    font-size: 36px;
-    font-weight: 600;
+    border-radius: 14px;    
+    font-size: 36px;    
     width: auto;
     cursor: pointer;
     transition: all 0.25s ease;
     border-radius: 18px;
     margin-top: 20px;
+    font-family: 'Orbitron';
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 #team1, #team2 {
@@ -310,4 +311,5 @@ input:checked + .slider:before {
     border: none;
     border-radius: 6px;
 }
+
 
