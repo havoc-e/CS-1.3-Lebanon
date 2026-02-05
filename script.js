@@ -56,7 +56,11 @@ let enabledServers = {
 	20: true,
 	21: true,
 	22: true,
-	23: true
+	23: true,
+	24: true,
+	25: true,
+	26: true,
+	27: true
 };
 function renderServerTables() {
     const container = document.getElementById("serverTables");
@@ -339,6 +343,7 @@ renderServerTables();
 generateTimes();
 
 loadMatches(matches => {console.log(matches); renderAllMatches(matches)});
+
 
 
 
